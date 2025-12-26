@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pamphlet Data Extractor | UTR Wholesale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8AFF80;
+            --secondary: #FF6B9D;
+            --accent: #FFD93D;
+            --dark: #0A0E27;
+            --darker: #050814;
+            --text: #E8EAED;
+            --text-dim: #9BA3AF;
+            --border: rgba(138, 255, 128, 0.2);
+            --glow: rgba(138, 255, 128, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(138, 255, 128, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(138, 255, 128, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Gradient orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -150px;
+            right: -150px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: -100px;
+            left: -100px;
+            animation: float 18s ease-in-out infinite reverse;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: 50%;
+            left: 50%;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(138, 255, 128, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-top: 12px;
+        }
+
+        .tech-badge::before {
+            content: '⚡';
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .main-card {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(138, 255, 128, 0.05);
+            animation: slideUp 0.8s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--primary), 
+                var(--accent), 
+                var(--secondary), 
+                transparent
+            );
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(138, 255, 128, 0.02);
+            margin-bottom: 32px;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: rgba(138, 255, 128, 0.05);
+            box-shadow: 0 0 40px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(138, 255, 128, 0.1);
+            box-shadow: 0 0 60px var(--glow);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .upload-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .preview-container {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .preview-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .preview-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .preview-info {
+            flex: 1;
+        }
+
+        .preview-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .preview-size {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .btn-remove {
+            background: rgba(255, 107, 157, 0.1);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 107, 157, 0.2);
+            transform: scale(1.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #6FE064 100%);
+            color: var(--dark);
+            box-shadow: 0 8px 24px rgba(138, 255, 128, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(138, 255, 128, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status {
+            margin-top: 32px;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            background: rgba(138, 255, 128, 0.05);
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .status-text {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .status-details {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(138, 255, 128, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results-preview {
+            margin-top: 32px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: none;
+        }
+
+        .results-preview.show {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(138, 255, 128, 0.1);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .instructions {
+            margin-top: 48px;
+            padding: 32px;
+            background: rgba(255, 217, 61, 0.05);
+            border: 1px solid rgba(255, 217, 61, 0.2);
+            border-radius: 16px;
+        }
+
+        .instructions h2 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .instructions code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 32px 24px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .upload-zone {
+                padding: 40px 24px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="container">
+        <header>
+            <h1>📸 Pamphlet Data Extractor</h1>
+            <p class="subtitle">Transform product catalogs into structured CSV files instantly</p>
+            <span class="tech-badge">Powered by Claude AI</span>
+        </header>
+
+        <div class="main-card">
+            <div class="upload-zone" id="uploadZone">
+                <span class="upload-icon">📤</span>
+                <div class="upload-text">Drop pamphlet images here</div>
+                <div class="upload-hint">or click to browse • Supports JPG, PNG, WebP</div>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+            </div>
+
+            <div class="preview-container" id="previewContainer"></div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="extractBtn" disabled>
+                    <span>🔍 Extract Data</span>
+                </button>
+                <button class="btn btn-secondary" id="downloadBtn" disabled>
+                    <span>💾 Download CSV</span>
+                </button>
+            </div>
+
+            <div class="status" id="status">
+                <div class="status-text" id="statusText"></div>
+                <div class="status-details" id="statusDetails"></div>
+            </div>
+
+            <div class="results-preview" id="resultsPreview">
+                <div class="results-header">📊 Extracted Products</div>
+                <div class="table-container">
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                                <th>Slug</th>
+                                <th>Category</th>
+                                <th>Stock Status</th>
+                                <th>Is Active</th>
+                                <th>Is Deal</th>
+                                <th>Is Bestseller</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h2>🚀 How to Use</h2>
+                <ol>
+                    <li>Upload one or more pamphlet images (like your sample pmp.jpeg)</li>
+                    <li>Click "Extract Data" - you'll be prompted to enter your category_id</li>
+                    <li>Find your category_id: Open Supabase → categories table → look for "Candies & Chocolates"</li>
+                    <li>AI will extract product data AND search the web for real descriptions</li>
+                    <li>Review the extracted products with auto-generated slugs</li>
+                    <li>Download the CSV file (ready for Supabase import)</li>
+                    <li>Import to Supabase: Table Editor → Products → Insert dropdown → "Import data from CSV"</li>
+                    <li>⚠️ Note: <code>image_url</code> will be empty - add product images manually after import</li>
+                </ol>
+                <p style="margin-top: 16px; color: var(--text-dim);">
+                    <strong>CSV Columns:</strong> <code>name</code>, <code>description</code>, <code>detailed_description</code>, 
+                    <code>price</code>, <code>image_url</code>, <code>category_id</code>, <code>slug</code>, 
+                    <code>stock_status</code>, <code>is_active</code>, <code>is_deal</code>, <code>deal_price</code>, <code>is_bestseller</code>
+                </p>
+                <p style="margin-top: 12px; color: var(--accent); font-size: 0.9rem;">
+                    ✨ AI Features: Slugs auto-generated, descriptions fetched from web search, all boolean flags set correctly
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFiles = [];
+        let extractedData = [];
+
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const extractBtn = document.getElementById('extractBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const status = document.getElementById('status');
+        const statusText = document.getElementById('statusText');
+        const statusDetails = document.getElementById('statusDetails');
+        const resultsPreview = document.getElementById('resultsPreview');
+        const resultsBody = document.getElementById('resultsBody');
+
+        // Upload zone interactions
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    uploadedFiles.push(file);
+                    addPreview(file);
+                }
+            });
+            updateUI();
+        }
+
+        function addPreview(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.createElement('div');
+                preview.className = 'preview-item';
+                preview.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <div class="preview-info">
+                        <div class="preview-name">${file.name}</div>
+                        <div class="preview-size">${(file.size / 1024).toFixed(1)} KB</div>
+                    </div>
+                    <button class="btn-remove" onclick="removeFile('${file.name}')">Remove</button>
+                `;
+                previewContainer.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        window.removeFile = function(fileName) {
+            uploadedFiles = uploadedFiles.filter(f => f.name !== fileName);
+            const previews = previewContainer.children;
+            Array.from(previews).forEach(preview => {
+                if (preview.querySelector('.preview-name').textContent === fileName) {
+                    preview.remove();
+                }
+            });
+            updateUI();
+        };
+
+        function updateUI() {
+            extractBtn.disabled = uploadedFiles.length === 0;
+        }
+
+        extractBtn.addEventListener('click', async () => {
+            extractBtn.disabled = true;
+            downloadBtn.disabled = true;
+            showStatus('Processing images...', '<span class="loader"></span> Analyzing with Claude AI');
+            resultsPreview.classList.remove('show');
+
+            try {
+                // First, we need to prompt user for category_id since we can't access their Supabase
+                const categoryNote = document.createElement('div');
+                categoryNote.style.cssText = 'margin: 20px 0; padding: 16px; background: rgba(255, 217, 61, 0.1); border: 1px solid rgba(255, 217, 61, 0.3); border-radius: 8px;';
+                categoryNote.innerHTML = `
+                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">⚠️ Category ID Required</p>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 12px;">
+                        Please check your Supabase "categories" table for the category_id of "Candies & Chocolates" (or create it).
+                    </p>
+                    <label style="display: block; color: var(--text); margin-bottom: 8px;">Enter category_id:</label>
+                    <input type="text" id="categoryIdInput" placeholder="e.g., 3" 
+                        style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace;">
+                `;
+                
+                const statusDiv = document.getElementById('status');
+                statusDiv.insertAdjacentElement('afterend', categoryNote);
+                
+                // Wait for user input
+                const categoryId = await new Promise(resolve => {
+                    const input = document.getElementById('categoryIdInput');
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && input.value.trim()) {
+                            categoryNote.remove();
+                            resolve(input.value.trim());
+                        }
+                    });
+                });
+
+                const allProducts = [];
+
+                for (let i = 0; i < uploadedFiles.length; i++) {
+                    const file = uploadedFiles[i];
+                    showStatus(`Processing ${i + 1}/${uploadedFiles.length}`, `Analyzing ${file.name} and fetching descriptions...`);
+
+                    const base64 = await fileToBase64(file);
+                    const products = await extractProductData(base64);
+                    
+                    // Add database-specific fields
+                    const enrichedProducts = products.map(p => ({
+                        name: p.name,
+                        description: p.description,
+                        detailed_description: null,
+                        price: parseFloat(p.price),
+                        image_url: '', // User will need to add this
+                        category_id: categoryId,
+                        slug: p.slug,
+                        stock_status: 'in_stock',
+                        is_active: true,
+                        is_deal: false,
+                        deal_price: null,
+                        is_bestseller: false
+                    }));
+                    
+                    allProducts.push(...enrichedProducts);
+                }
+
+                extractedData = allProducts;
+                displayResults(allProducts);
+                showStatus('✓ Extraction complete!', `Found ${allProducts.length} products. Note: image_url field is empty - add images manually.`);
+                downloadBtn.disabled = false;
+
+            } catch (error) {
+                showStatus('❌ Error', error.message);
+                console.error(error);
+            } finally {
+                extractBtn.disabled = false;
+            }
+        });
+
+        async function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function extractProductData(base64Image) {
+            // Step 1: Extract basic product info from image
+            const extractResponse = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-20250514',
+                    max_tokens: 2000,
+                    messages: [{
+                        role: 'user',
+                        content: [
+                            {
+                                type: 'image',
+                                source: {
+                                    type: 'base64',
+                                    media_type: 'image/jpeg',
+                                    data: base64Image
+                                }
+                            },
+                            {
+                                type: 'text',
+                                text: `Extract all product information from this catalog/pamphlet image. For each product, provide:
+- name: Exact product name as shown
+- price: Price (numeric value only, remove $ symbol, just the number)
+
+Return ONLY a JSON array with no preamble or explanation. Format:
+[{"name": "Product Name Here", "price": "19.99"}]
+
+Be precise with product names and prices as they appear in the image.`
+                            }
+                        ]
+                    }]
+                })
+            });
+
+            if (!extractResponse.ok) {
+                throw new Error(`API Error: ${extractResponse.status} ${extractResponse.statusText}`);
+            }
+
+            const extractData = await extractResponse.json();
+            const extractText = extractData.content.find(c => c.type === 'text')?.text || '';
+            const jsonMatch = extractText.match(/\[[\s\S]*\]/);
+            if (!jsonMatch) {
+                throw new Error('No product data found in response');
+            }
+
+            const basicProducts = JSON.parse(jsonMatch[0]);
+
+            // Step 2: For each product, search web for description and generate slug
+            const enrichedProducts = [];
+            
+            for (const product of basicProducts) {
+                const enrichResponse = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 2000,
+                        tools: [{
+                            type: "web_search_20250305",
+                            name: "web_search"
+                        }],
+                        messages: [{
+                            role: 'user',
+                            content: `Search for "${product.name}" candy/chocolate product and provide:
+1. A brief description (1-2 sentences) based on real product info
+2. A URL-friendly slug (lowercase, hyphens, no special chars)
+
+Return as JSON: {"description": "...", "slug": "..."}`
+                        }]
+                    })
+                });
+
+                if (!enrichResponse.ok) {
+                    console.warn(`Failed to enrich ${product.name}, using fallback`);
+                    enrichedProducts.push({
+                        name: product.name,
+                        description: product.name,
+                        price: product.price,
+                        slug: product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+                    });
+                    continue;
+                }
+
+                const enrichData = await enrichResponse.json();
+                let description = product.name;
+                let slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+                // Parse the response - handle both text and tool_use blocks
+                for (const block of enrichData.content) {
+                    if (block.type === 'text') {
+                        try {
+                            const enrichJson = JSON.parse(block.text.match(/\{[\s\S]*\}/)?.[0] || '{}');
+                            if (enrichJson.description) description = enrichJson.description;
+                            if (enrichJson.slug) slug = enrichJson.slug;
+                        } catch (e) {
+                            console.warn('Could not parse enrichment JSON');
+                        }
+                    }
+                }
+
+                enrichedProducts.push({
+                    name: product.name,
+                    description: description,
+                    price: product.price,
+                    slug: slug
+                });
+            }
+
+            return enrichedProducts;
+        }
+
+        function displayResults(products) {
+            resultsBody.innerHTML = '';
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name || ''}</td>
+                    <td>$${product.price || ''}</td>
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${product.description || ''}</td>
+                    <td style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em;">${product.slug || ''}</td>
+                    <td>${product.category_id || ''}</td>
+                    <td>${product.stock_status || ''}</td>
+                    <td>${product.is_active ? '✓' : '✗'}</td>
+                    <td>${product.is_deal ? '✓' : '✗'}</td>
+                    <td>${product.is_bestseller ? '✓' : '✗'}</td>
+                `;
+                resultsBody.appendChild(row);
+            });
+            resultsPreview.classList.add('show');
+        }
+
+        function showStatus(text, details) {
+            statusText.innerHTML = text;
+            statusDetails.innerHTML = details;
+            status.classList.add('show');
+        }
+
+        downloadBtn.addEventListener('click', () => {
+            const csv = convertToCSV(extractedData);
+            downloadCSV(csv, 'products_import.csv');
+            showStatus('✓ Download complete!', 'Ready for Supabase import');
+        });
+
+        function convertToCSV(data) {
+            const headers = ['name', 'description', 'detailed_description', 'price', 'image_url', 'category_id', 'slug', 'stock_status', 'is_active', 'is_deal', 'deal_price', 'is_bestseller'];
+            const rows = data.map(item => 
+                headers.map(header => {
+                    const value = item[header] === null ? '' : item[header];
+                    // Escape quotes and wrap in quotes if contains comma
+                    const escaped = String(value).replace(/"/g, '""');
+                    return escaped.includes(',') ? `"${escaped}"` : escaped;
+                }).join(',')
+            );
+            return [headers.join(','), ...rows].join('\n');
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
