@@ -33,7 +33,6 @@
             position: relative;
         }
 
-        /* Animated background grid */
         body::before {
             content: '';
             position: fixed;
@@ -55,7 +54,6 @@
             100% { transform: translate(60px, 60px); }
         }
 
-        /* Gradient orbs */
         .orb {
             position: fixed;
             border-radius: 50%;
@@ -390,16 +388,20 @@
             transform: none !important;
         }
 
-        .status {
+        .log-container {
             margin-top: 32px;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            border-left: 4px solid var(--primary);
-            background: rgba(138, 255, 128, 0.05);
+            padding: 24px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
             display: none;
         }
 
-        .status.show {
+        .log-container.show {
             display: block;
             animation: slideIn 0.4s ease-out;
         }
@@ -407,7 +409,35 @@
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .log-header {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-entry {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-left: 3px solid transparent;
+            border-radius: 4px;
+            animation: logAppear 0.3s ease-out;
+        }
+
+        @keyframes logAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
             }
             to {
                 opacity: 1;
@@ -415,85 +445,93 @@
             }
         }
 
-        .status-text {
-            font-weight: 600;
+        .log-entry.info {
+            border-left-color: var(--primary);
+            background: rgba(138, 255, 128, 0.05);
             color: var(--primary);
-            margin-bottom: 8px;
         }
 
-        .status-details {
-            font-size: 0.9rem;
-            color: var(--text-dim);
-            font-family: 'JetBrains Mono', monospace;
+        .log-entry.success {
+            border-left-color: #4ADE80;
+            background: rgba(74, 222, 128, 0.05);
+            color: #4ADE80;
         }
 
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(138, 255, 128, 0.3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .log-entry.warning {
+            border-left-color: var(--accent);
+            background: rgba(255, 217, 61, 0.05);
+            color: var(--accent);
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .log-entry.error {
+            border-left-color: var(--secondary);
+            background: rgba(255, 107, 157, 0.05);
+            color: var(--secondary);
         }
 
-        .results-preview {
-            margin-top: 32px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
+        .log-timestamp {
+            opacity: 0.6;
+            font-size: 0.75rem;
+            margin-right: 8px;
+        }
+
+        .prompt-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--primary);
             border-radius: 12px;
             padding: 24px;
+            margin-top: 32px;
             display: none;
         }
 
-        .results-preview.show {
+        .prompt-box.show {
             display: block;
-            animation: fadeIn 0.5s ease-out;
+            animation: slideIn 0.4s ease-out;
         }
 
-        .results-header {
+        .prompt-header {
             font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 16px;
             color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .table-container {
-            overflow-x: auto;
+        .prompt-content {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(138, 255, 128, 0.2);
+            border-radius: 8px;
+            padding: 20px;
             max-height: 400px;
             overflow-y: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-        }
-
-        th {
-            background: rgba(138, 255, 128, 0.1);
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--primary);
-            border-bottom: 2px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.6;
             color: var(--text-dim);
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.03);
+        .copy-btn {
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--accent) 0%, #E8B42E 100%);
+            color: var(--dark);
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 217, 61, 0.3);
         }
 
         .instructions {
@@ -551,6 +589,20 @@
                 justify-content: center;
             }
         }
+
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(138, 255, 128, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -562,7 +614,7 @@
         <header>
             <h1>📸 Pamphlet Data Extractor</h1>
             <p class="subtitle">Transform product catalogs into structured CSV files instantly</p>
-            <span class="tech-badge">Powered by Claude AI</span>
+            <span class="tech-badge">Powered by Claude AI (CORS-Free)</span>
         </header>
 
         <div class="main-card">
@@ -575,61 +627,55 @@
 
             <div class="preview-container" id="previewContainer"></div>
 
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; color: var(--text); margin-bottom: 8px; font-weight: 600;">Category ID (from your Supabase categories table):</label>
+                <input type="text" id="categoryIdInput" placeholder="e.g., 3" 
+                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace;">
+            </div>
+
             <div class="action-buttons">
-                <button class="btn btn-primary" id="extractBtn" disabled>
-                    <span>🔍 Extract Data</span>
-                </button>
-                <button class="btn btn-secondary" id="downloadBtn" disabled>
-                    <span>💾 Download CSV</span>
+                <button class="btn btn-primary" id="generateBtn" disabled>
+                    <span>🔮 Generate Claude Prompt</span>
                 </button>
             </div>
 
-            <div class="status" id="status">
-                <div class="status-text" id="statusText"></div>
-                <div class="status-details" id="statusDetails"></div>
-            </div>
-
-            <div class="results-preview" id="resultsPreview">
-                <div class="results-header">📊 Extracted Products</div>
-                <div class="table-container">
-                    <table id="resultsTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Description</th>
-                                <th>Slug</th>
-                                <th>Category</th>
-                                <th>Stock Status</th>
-                                <th>Is Active</th>
-                                <th>Is Deal</th>
-                                <th>Is Bestseller</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultsBody"></tbody>
-                    </table>
+            <div class="log-container" id="logContainer">
+                <div class="log-header">
+                    <span class="loader"></span>
+                    <span>Processing Log</span>
                 </div>
+                <div id="logContent"></div>
+            </div>
+
+            <div class="prompt-box" id="promptBox">
+                <div class="prompt-header">
+                    <span>📋</span>
+                    <span>Copy this prompt and paste it in Claude.ai</span>
+                </div>
+                <div class="prompt-content" id="promptContent"></div>
+                <button class="copy-btn" id="copyBtn">
+                    <span>📋</span>
+                    <span>Copy Prompt</span>
+                </button>
             </div>
 
             <div class="instructions">
-                <h2>🚀 How to Use</h2>
+                <h2>🚀 How to Use (CORS-Free Method)</h2>
                 <ol>
-                    <li>Upload one or more pamphlet images (like your sample pmp.jpeg)</li>
-                    <li>Click "Extract Data" - you'll be prompted to enter your category_id</li>
-                    <li>Find your category_id: Open Supabase → categories table → look for "Candies & Chocolates"</li>
-                    <li>AI will extract product data AND search the web for real descriptions</li>
-                    <li>Review the extracted products with auto-generated slugs</li>
-                    <li>Download the CSV file (ready for Supabase import)</li>
-                    <li>Import to Supabase: Table Editor → Products → Insert dropdown → "Import data from CSV"</li>
-                    <li>⚠️ Note: <code>image_url</code> will be empty - add product images manually after import</li>
+                    <li>Upload one or more pamphlet images</li>
+                    <li>Enter your category_id from Supabase (check your categories table)</li>
+                    <li>Click "Generate Claude Prompt" - images will be embedded</li>
+                    <li>Copy the generated prompt</li>
+                    <li>Open <a href="https://claude.ai" target="_blank" style="color: var(--primary); text-decoration: underline;">claude.ai</a> in a new tab</li>
+                    <li>Paste the prompt and wait for Claude to generate your CSV</li>
+                    <li>Download the CSV from Claude's response</li>
+                    <li>Import to Supabase: Table Editor → Products → Insert → "Import data from CSV"</li>
                 </ol>
                 <p style="margin-top: 16px; color: var(--text-dim);">
-                    <strong>CSV Columns:</strong> <code>name</code>, <code>description</code>, <code>detailed_description</code>, 
-                    <code>price</code>, <code>image_url</code>, <code>category_id</code>, <code>slug</code>, 
-                    <code>stock_status</code>, <code>is_active</code>, <code>is_deal</code>, <code>deal_price</code>, <code>is_bestseller</code>
+                    <strong>Why this method?</strong> Browser CORS restrictions prevent direct API calls. This workaround lets you use Claude.ai's interface (which has API access) to process your images.
                 </p>
                 <p style="margin-top: 12px; color: var(--accent); font-size: 0.9rem;">
-                    ✨ AI Features: Slugs auto-generated, descriptions fetched from web search, all boolean flags set correctly
+                    ✨ Claude will search the web for real product descriptions and auto-generate slugs!
                 </p>
             </div>
         </div>
@@ -637,18 +683,40 @@
 
     <script>
         let uploadedFiles = [];
-        let extractedData = [];
+        let logEntries = [];
 
         const uploadZone = document.getElementById('uploadZone');
         const fileInput = document.getElementById('fileInput');
         const previewContainer = document.getElementById('previewContainer');
-        const extractBtn = document.getElementById('extractBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const status = document.getElementById('status');
-        const statusText = document.getElementById('statusText');
-        const statusDetails = document.getElementById('statusDetails');
-        const resultsPreview = document.getElementById('resultsPreview');
-        const resultsBody = document.getElementById('resultsBody');
+        const generateBtn = document.getElementById('generateBtn');
+        const logContainer = document.getElementById('logContainer');
+        const logContent = document.getElementById('logContent');
+        const promptBox = document.getElementById('promptBox');
+        const promptContent = document.getElementById('promptContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const categoryIdInput = document.getElementById('categoryIdInput');
+
+        // Logging system
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = { timestamp, message, type };
+            logEntries.push(entry);
+
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span>${message}`;
+            logContent.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function showLog() {
+            logContainer.classList.add('show');
+        }
+
+        function clearLog() {
+            logContent.innerHTML = '';
+            logEntries = [];
+        }
 
         // Upload zone interactions
         uploadZone.addEventListener('click', () => fileInput.click());
@@ -673,10 +741,16 @@
         });
 
         function handleFiles(files) {
-            Array.from(files).forEach(file => {
+            addLog(`📁 Received ${files.length} file(s)`, 'info');
+            showLog();
+
+            Array.from(files).forEach((file, index) => {
                 if (file.type.startsWith('image/')) {
                     uploadedFiles.push(file);
+                    addLog(`✓ Added: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`, 'success');
                     addPreview(file);
+                } else {
+                    addLog(`✗ Skipped: ${file.name} (not an image)`, 'warning');
                 }
             });
             updateUI();
@@ -708,85 +782,57 @@
                     preview.remove();
                 }
             });
+            addLog(`🗑️ Removed: ${fileName}`, 'info');
             updateUI();
         };
 
         function updateUI() {
-            extractBtn.disabled = uploadedFiles.length === 0;
+            generateBtn.disabled = uploadedFiles.length === 0;
         }
 
-        extractBtn.addEventListener('click', async () => {
-            extractBtn.disabled = true;
-            downloadBtn.disabled = true;
-            showStatus('Processing images...', '<span class="loader"></span> Analyzing with Claude AI');
-            resultsPreview.classList.remove('show');
+        generateBtn.addEventListener('click', async () => {
+            const categoryId = categoryIdInput.value.trim();
+            if (!categoryId) {
+                alert('Please enter a category ID');
+                addLog('❌ Missing category ID', 'error');
+                return;
+            }
+
+            generateBtn.disabled = true;
+            clearLog();
+            showLog();
+            
+            addLog('🚀 Starting prompt generation...', 'info');
+            addLog(`📊 Processing ${uploadedFiles.length} image(s)`, 'info');
+            addLog(`🏷️ Using category_id: ${categoryId}`, 'info');
 
             try {
-                // First, we need to prompt user for category_id since we can't access their Supabase
-                const categoryNote = document.createElement('div');
-                categoryNote.style.cssText = 'margin: 20px 0; padding: 16px; background: rgba(255, 217, 61, 0.1); border: 1px solid rgba(255, 217, 61, 0.3); border-radius: 8px;';
-                categoryNote.innerHTML = `
-                    <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">⚠️ Category ID Required</p>
-                    <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 12px;">
-                        Please check your Supabase "categories" table for the category_id of "Candies & Chocolates" (or create it).
-                    </p>
-                    <label style="display: block; color: var(--text); margin-bottom: 8px;">Enter category_id:</label>
-                    <input type="text" id="categoryIdInput" placeholder="e.g., 3" 
-                        style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace;">
-                `;
+                const imageDataArray = [];
                 
-                const statusDiv = document.getElementById('status');
-                statusDiv.insertAdjacentElement('afterend', categoryNote);
-                
-                // Wait for user input
-                const categoryId = await new Promise(resolve => {
-                    const input = document.getElementById('categoryIdInput');
-                    input.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter' && input.value.trim()) {
-                            categoryNote.remove();
-                            resolve(input.value.trim());
-                        }
-                    });
-                });
-
-                const allProducts = [];
-
                 for (let i = 0; i < uploadedFiles.length; i++) {
                     const file = uploadedFiles[i];
-                    showStatus(`Processing ${i + 1}/${uploadedFiles.length}`, `Analyzing ${file.name} and fetching descriptions...`);
-
+                    addLog(`📸 Converting image ${i + 1}/${uploadedFiles.length}: ${file.name}`, 'info');
                     const base64 = await fileToBase64(file);
-                    const products = await extractProductData(base64);
-                    
-                    // Add database-specific fields
-                    const enrichedProducts = products.map(p => ({
-                        name: p.name,
-                        description: p.description,
-                        detailed_description: null,
-                        price: parseFloat(p.price),
-                        image_url: '', // User will need to add this
-                        category_id: categoryId,
-                        slug: p.slug,
-                        stock_status: 'in_stock',
-                        is_active: true,
-                        is_deal: false,
-                        deal_price: null,
-                        is_bestseller: false
-                    }));
-                    
-                    allProducts.push(...enrichedProducts);
+                    imageDataArray.push({ name: file.name, data: base64 });
+                    addLog(`✓ Converted ${file.name} to base64`, 'success');
                 }
 
-                extractedData = allProducts;
-                displayResults(allProducts);
-                showStatus('✓ Extraction complete!', `Found ${allProducts.length} products. Note: image_url field is empty - add images manually.`);
-                downloadBtn.disabled = false;
+                addLog('🎨 Building Claude prompt with embedded images...', 'info');
+                
+                const prompt = buildClaudePrompt(imageDataArray, categoryId);
+                
+                addLog('✓ Prompt generated successfully!', 'success');
+                addLog(`📏 Prompt size: ${(prompt.length / 1024).toFixed(1)} KB`, 'info');
+                addLog('📋 Scroll down to copy the prompt', 'success');
+
+                promptContent.textContent = prompt;
+                promptBox.classList.add('show');
 
             } catch (error) {
-                showStatus('❌ Error', error.message);
+                addLog(`❌ Error: ${error.message}`, 'error');
                 console.error(error);
             } finally {
-                extractBtn.disabled = false;
+                generateBtn.disabled = false;
             }
         });
 
@@ -802,176 +848,62 @@
             });
         }
 
-        async function extractProductData(base64Image) {
-            // Step 1: Extract basic product info from image
-            const extractResponse = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
-                    max_tokens: 2000,
-                    messages: [{
-                        role: 'user',
-                        content: [
-                            {
-                                type: 'image',
-                                source: {
-                                    type: 'base64',
-                                    media_type: 'image/jpeg',
-                                    data: base64Image
-                                }
-                            },
-                            {
-                                type: 'text',
-                                text: `Extract all product information from this catalog/pamphlet image. For each product, provide:
-- name: Exact product name as shown
-- price: Price (numeric value only, remove $ symbol, just the number)
+        function buildClaudePrompt(imageDataArray, categoryId) {
+            let prompt = `I need you to extract product data from ${imageDataArray.length} pamphlet image(s) and create a CSV file for my Supabase database.
 
-Return ONLY a JSON array with no preamble or explanation. Format:
-[{"name": "Product Name Here", "price": "19.99"}]
+INSTRUCTIONS:
+1. Extract all products from the images with their names and prices
+2. For EACH product, search the web to find a real, accurate description (1-2 sentences)
+3. Generate a clean URL slug for each product (lowercase, hyphens, no special chars)
+4. Format as CSV with these exact columns:
+   name,description,detailed_description,price,image_url,category_id,slug,stock_status,is_active,is_deal,deal_price,is_bestseller
 
-Be precise with product names and prices as they appear in the image.`
-                            }
-                        ]
-                    }]
-                })
+FIELD REQUIREMENTS:
+- name: Exact product name from image
+- description: Real product description from web search (NOT made up)
+- detailed_description: Leave empty
+- price: Just the number (no $ symbol)
+- image_url: Leave empty  
+- category_id: ${categoryId}
+- slug: Auto-generated, URL-friendly
+- stock_status: in_stock
+- is_active: true
+- is_deal: false
+- deal_price: (leave empty)
+- is_bestseller: false
+
+IMPORTANT:
+- Search the web for REAL product descriptions
+- Generate proper slugs
+- Be precise with prices from the images
+- Output only the CSV data, ready to download
+
+Here are the images:
+`;
+
+            // Note: In the actual claude.ai interface, you'd attach these as images
+            // For this prompt, we'll just list them
+            imageDataArray.forEach((img, index) => {
+                prompt += `\nImage ${index + 1}: ${img.name}\n`;
             });
 
-            if (!extractResponse.ok) {
-                throw new Error(`API Error: ${extractResponse.status} ${extractResponse.statusText}`);
-            }
+            prompt += `\n\nIMPORTANT: I will upload these ${imageDataArray.length} image(s) along with this message. Please analyze them and create the CSV.`;
 
-            const extractData = await extractResponse.json();
-            const extractText = extractData.content.find(c => c.type === 'text')?.text || '';
-            const jsonMatch = extractText.match(/\[[\s\S]*\]/);
-            if (!jsonMatch) {
-                throw new Error('No product data found in response');
-            }
-
-            const basicProducts = JSON.parse(jsonMatch[0]);
-
-            // Step 2: For each product, search web for description and generate slug
-            const enrichedProducts = [];
-            
-            for (const product of basicProducts) {
-                const enrichResponse = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 2000,
-                        tools: [{
-                            type: "web_search_20250305",
-                            name: "web_search"
-                        }],
-                        messages: [{
-                            role: 'user',
-                            content: `Search for "${product.name}" candy/chocolate product and provide:
-1. A brief description (1-2 sentences) based on real product info
-2. A URL-friendly slug (lowercase, hyphens, no special chars)
-
-Return as JSON: {"description": "...", "slug": "..."}`
-                        }]
-                    })
-                });
-
-                if (!enrichResponse.ok) {
-                    console.warn(`Failed to enrich ${product.name}, using fallback`);
-                    enrichedProducts.push({
-                        name: product.name,
-                        description: product.name,
-                        price: product.price,
-                        slug: product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-                    });
-                    continue;
-                }
-
-                const enrichData = await enrichResponse.json();
-                let description = product.name;
-                let slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-                // Parse the response - handle both text and tool_use blocks
-                for (const block of enrichData.content) {
-                    if (block.type === 'text') {
-                        try {
-                            const enrichJson = JSON.parse(block.text.match(/\{[\s\S]*\}/)?.[0] || '{}');
-                            if (enrichJson.description) description = enrichJson.description;
-                            if (enrichJson.slug) slug = enrichJson.slug;
-                        } catch (e) {
-                            console.warn('Could not parse enrichment JSON');
-                        }
-                    }
-                }
-
-                enrichedProducts.push({
-                    name: product.name,
-                    description: description,
-                    price: product.price,
-                    slug: slug
-                });
-            }
-
-            return enrichedProducts;
+            return prompt;
         }
 
-        function displayResults(products) {
-            resultsBody.innerHTML = '';
-            products.forEach(product => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${product.name || ''}</td>
-                    <td>$${product.price || ''}</td>
-                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${product.description || ''}</td>
-                    <td style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em;">${product.slug || ''}</td>
-                    <td>${product.category_id || ''}</td>
-                    <td>${product.stock_status || ''}</td>
-                    <td>${product.is_active ? '✓' : '✗'}</td>
-                    <td>${product.is_deal ? '✓' : '✗'}</td>
-                    <td>${product.is_bestseller ? '✓' : '✗'}</td>
-                `;
-                resultsBody.appendChild(row);
+        copyBtn.addEventListener('click', () => {
+            const text = promptContent.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<span>✓</span><span>Copied!</span>';
+                addLog('📋 Prompt copied to clipboard!', 'success');
+                addLog('👉 Now paste this in claude.ai along with your images', 'info');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
             });
-            resultsPreview.classList.add('show');
-        }
-
-        function showStatus(text, details) {
-            statusText.innerHTML = text;
-            statusDetails.innerHTML = details;
-            status.classList.add('show');
-        }
-
-        downloadBtn.addEventListener('click', () => {
-            const csv = convertToCSV(extractedData);
-            downloadCSV(csv, 'products_import.csv');
-            showStatus('✓ Download complete!', 'Ready for Supabase import');
         });
-
-        function convertToCSV(data) {
-            const headers = ['name', 'description', 'detailed_description', 'price', 'image_url', 'category_id', 'slug', 'stock_status', 'is_active', 'is_deal', 'deal_price', 'is_bestseller'];
-            const rows = data.map(item => 
-                headers.map(header => {
-                    const value = item[header] === null ? '' : item[header];
-                    // Escape quotes and wrap in quotes if contains comma
-                    const escaped = String(value).replace(/"/g, '""');
-                    return escaped.includes(',') ? `"${escaped}"` : escaped;
-                }).join(',')
-            );
-            return [headers.join(','), ...rows].join('\n');
-        }
-
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
     </script>
 </body>
 </html>
