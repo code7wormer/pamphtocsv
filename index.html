@@ -704,15 +704,18 @@
                 <div class="prompt-content" id="systemPromptContent">You are a product data extraction assistant specialized in creating CSV files for e-commerce databases. When analyzing product catalog images, you:
 
 1. Extract product names and prices with extreme precision
-2. Use Google Search to find REAL product descriptions (never make them up)
-3. Generate clean, SEO-friendly URL slugs
-4. Format data as CSV with exact column specifications
-5. Always search the web for accurate product information
+2. Use Google Search to find REAL product information
+3. Create SHORT descriptions (under 10 words) that are catchy and clear
+4. Write detailed descriptions (1-2 sentences) with comprehensive product info from web search
+5. Generate clean, SEO-friendly URL slugs
+6. Format data as CSV with exact column specifications
 
 When given product images, you will:
 - Identify all visible products
 - Extract exact names and prices
-- Search for each product to get authentic descriptions
+- Search for each product to get authentic information
+- Write brief, punchy descriptions (under 10 words)
+- Write detailed descriptions with full product information from search
 - Create proper slugs (lowercase, hyphens, no special chars)
 - Output structured CSV data
 
@@ -921,14 +924,14 @@ name,description,detailed_description,price,image_url,category_id,slug,stock_sta
 
 EXTRACTION REQUIREMENTS:
 1. Extract ALL products visible in the image(s)
-2. For EACH product, use Google Search to find a real, accurate description (1-2 sentences)
+2. For EACH product, use Google Search to find real product information
 3. Generate clean URL slugs (lowercase, hyphens, no special characters)
 4. Extract exact prices as shown (numbers only, no $ symbols)
 
 FIELD SPECIFICATIONS:
 - name: Exact product name from image
-- description: Real description from Google Search (REQUIRED - never make up descriptions)
-- detailed_description: (leave empty)
+- description: SHORT catchy description under 10 words (e.g., "Soft gummy candy with toy figurine")
+- detailed_description: Full product description from Google Search (1-2 sentences with real product info)
 - price: Numeric only (e.g., 19.99, not $19.99)
 - image_url: (leave empty)
 - category_id: ${categoryId}
@@ -940,7 +943,9 @@ FIELD SPECIFICATIONS:
 - is_bestseller: false
 
 CRITICAL INSTRUCTIONS:
-✓ Search Google for each product to get REAL descriptions
+✓ Search Google for each product to get REAL information
+✓ description: Keep it SHORT and catchy (under 10 words)
+✓ detailed_description: Full sentences with comprehensive info from web search (1-2 sentences)
 ✓ Be precise with product names and prices from the images
 ✓ Generate proper slugs (lowercase, replace spaces/special chars with hyphens)
 ✓ Output ONLY the CSV data (no markdown, no explanations)
