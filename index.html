@@ -709,6 +709,16 @@
 4. Write detailed descriptions (1-2 sentences) with comprehensive product info from web search
 5. Generate clean, SEO-friendly URL slugs
 6. Format data as CSV with exact column specifications
+7. Ask the user for image URLs one by one for each product
+
+INTERACTIVE IMAGE URL COLLECTION:
+After extracting all products, you will:
+- Present the list of extracted products with their names
+- Ask for the image_url for ONE product at a time
+- Show the product name clearly: "Please provide image URL for: [PRODUCT NAME]"
+- Wait for the user to provide the URL
+- Move to the next product only after receiving the URL
+- Once all image URLs are collected, generate the final CSV
 
 When given product images, you will:
 - Identify all visible products
@@ -717,7 +727,8 @@ When given product images, you will:
 - Write brief, punchy descriptions (under 10 words)
 - Write detailed descriptions with full product information from search
 - Create proper slugs (lowercase, hyphens, no special chars)
-- Output structured CSV data
+- INTERACTIVELY collect image_url for each product one by one
+- Output structured CSV data with all image URLs included
 
 You maintain high accuracy and always verify information through web search before including descriptions.</div>
                 <button class="copy-btn" id="copySystemBtn">
@@ -927,13 +938,14 @@ EXTRACTION REQUIREMENTS:
 2. For EACH product, use Google Search to find real product information
 3. Generate clean URL slugs (lowercase, hyphens, no special characters)
 4. Extract exact prices as shown (numbers only, no $ symbols)
+5. After extraction, ask me for image URLs one by one
 
 FIELD SPECIFICATIONS:
 - name: Exact product name from image
 - description: SHORT catchy description under 10 words (e.g., "Soft gummy candy with toy figurine")
 - detailed_description: Full product description from Google Search (1-2 sentences with real product info)
 - price: Numeric only (e.g., 19.99, not $19.99)
-- image_url: (leave empty)
+- image_url: You will ask me for this ONE BY ONE for each product
 - category_id: ${categoryId}
 - slug: Auto-generate from name (e.g., "Skiing Bear Candy" → "skiing-bear-candy")
 - stock_status: in_stock
@@ -942,20 +954,32 @@ FIELD SPECIFICATIONS:
 - deal_price: (leave empty)
 - is_bestseller: false
 
+INTERACTIVE IMAGE URL WORKFLOW:
+After extracting all product data:
+1. Show me the list of all products you found
+2. Ask for image URL for the FIRST product: "Please provide image URL for: [PRODUCT NAME]"
+3. Wait for my response with the URL
+4. Ask for the NEXT product's image URL
+5. Repeat until all products have image URLs
+6. Generate the final CSV with all data including image URLs
+
 CRITICAL INSTRUCTIONS:
 ✓ Search Google for each product to get REAL information
 ✓ description: Keep it SHORT and catchy (under 10 words)
 ✓ detailed_description: Full sentences with comprehensive info from web search (1-2 sentences)
 ✓ Be precise with product names and prices from the images
 ✓ Generate proper slugs (lowercase, replace spaces/special chars with hyphens)
-✓ Output ONLY the CSV data (no markdown, no explanations)
-✓ First row must be the header row
-✓ Use commas as delimiters, quotes around fields containing commas
+✓ DO NOT generate the CSV yet - wait until I provide all image URLs
+✓ Ask for image URLs ONE AT A TIME, showing the product name clearly
 
 OUTPUT FORMAT:
-Start your response with the CSV header, then one row per product. Make it downloadable.
+1. Extract all products and show me the complete list
+2. Ask: "Please provide image URL for: [PRODUCT NAME #1]"
+3. I will reply with the URL
+4. Continue asking for each product one by one
+5. After collecting all image URLs, generate the final downloadable CSV
 
-Ready? Analyze the attached ${imageCount} image(s) and create the CSV.`;
+Ready? Analyze the attached ${imageCount} image(s) and start the interactive extraction process.`;
         }
 
         copySystemBtn.addEventListener('click', () => {
