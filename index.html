@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pamphlet Data Extractor | UTR Wholesale</title>
+    <title>Pamphlet Data Extractor | UTR Wholesale - Gemini Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #8AFF80;
-            --secondary: #FF6B9D;
-            --accent: #FFD93D;
+            --primary: #4285F4;
+            --secondary: #EA4335;
+            --accent: #FBBC04;
+            --success: #34A853;
             --dark: #0A0E27;
             --darker: #050814;
             --text: #E8EAED;
             --text-dim: #9BA3AF;
-            --border: rgba(138, 255, 128, 0.2);
-            --glow: rgba(138, 255, 128, 0.4);
+            --border: rgba(66, 133, 244, 0.2);
+            --glow: rgba(66, 133, 244, 0.4);
         }
 
         * {
@@ -41,8 +42,8 @@
             width: 100%;
             height: 100%;
             background: 
-                linear-gradient(90deg, rgba(138, 255, 128, 0.03) 1px, transparent 1px),
-                linear-gradient(rgba(138, 255, 128, 0.03) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(66, 133, 244, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(66, 133, 244, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             animation: gridMove 20s linear infinite;
             pointer-events: none;
@@ -123,7 +124,7 @@
         h1 {
             font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -144,7 +145,7 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background: rgba(138, 255, 128, 0.1);
+            background: rgba(66, 133, 244, 0.1);
             border: 1px solid var(--border);
             border-radius: 20px;
             font-family: 'JetBrains Mono', monospace;
@@ -154,7 +155,7 @@
         }
 
         .tech-badge::before {
-            content: '⚡';
+            content: '🔷';
             animation: pulse 2s ease-in-out infinite;
         }
 
@@ -171,7 +172,7 @@
             padding: 48px;
             box-shadow: 
                 0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 100px rgba(138, 255, 128, 0.05);
+                0 0 100px rgba(66, 133, 244, 0.05);
             animation: slideUp 0.8s ease-out 0.2s both;
             position: relative;
             overflow: hidden;
@@ -187,8 +188,8 @@
             background: linear-gradient(90deg, 
                 transparent, 
                 var(--primary), 
+                var(--success), 
                 var(--accent), 
-                var(--secondary), 
                 transparent
             );
             animation: shimmer 3s linear infinite;
@@ -218,20 +219,20 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            background: rgba(138, 255, 128, 0.02);
+            background: rgba(66, 133, 244, 0.02);
             margin-bottom: 32px;
         }
 
         .upload-zone:hover {
             border-color: var(--primary);
-            background: rgba(138, 255, 128, 0.05);
+            background: rgba(66, 133, 244, 0.05);
             box-shadow: 0 0 40px var(--glow);
             transform: translateY(-2px);
         }
 
         .upload-zone.dragover {
             border-color: var(--primary);
-            background: rgba(138, 255, 128, 0.1);
+            background: rgba(66, 133, 244, 0.1);
             box-shadow: 0 0 60px var(--glow);
         }
 
@@ -305,8 +306,8 @@
         }
 
         .btn-remove {
-            background: rgba(255, 107, 157, 0.1);
-            border: 1px solid rgba(255, 107, 157, 0.3);
+            background: rgba(234, 67, 53, 0.1);
+            border: 1px solid rgba(234, 67, 53, 0.3);
             color: var(--secondary);
             padding: 8px 16px;
             border-radius: 8px;
@@ -316,8 +317,36 @@
         }
 
         .btn-remove:hover {
-            background: rgba(255, 107, 157, 0.2);
+            background: rgba(234, 67, 53, 0.2);
             transform: scale(1.05);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.2);
         }
 
         .action-buttons {
@@ -361,25 +390,14 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, #6FE064 100%);
-            color: var(--dark);
-            box-shadow: 0 8px 24px rgba(138, 255, 128, 0.3);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(138, 255, 128, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
+            box-shadow: 0 12px 32px rgba(66, 133, 244, 0.4);
         }
 
         .btn:disabled {
@@ -447,25 +465,25 @@
 
         .log-entry.info {
             border-left-color: var(--primary);
-            background: rgba(138, 255, 128, 0.05);
+            background: rgba(66, 133, 244, 0.05);
             color: var(--primary);
         }
 
         .log-entry.success {
-            border-left-color: #4ADE80;
-            background: rgba(74, 222, 128, 0.05);
-            color: #4ADE80;
+            border-left-color: var(--success);
+            background: rgba(52, 168, 83, 0.05);
+            color: var(--success);
         }
 
         .log-entry.warning {
             border-left-color: var(--accent);
-            background: rgba(255, 217, 61, 0.05);
+            background: rgba(251, 188, 4, 0.05);
             color: var(--accent);
         }
 
         .log-entry.error {
             border-left-color: var(--secondary);
-            background: rgba(255, 107, 157, 0.05);
+            background: rgba(234, 67, 53, 0.05);
             color: var(--secondary);
         }
 
@@ -501,7 +519,7 @@
 
         .prompt-content {
             background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(138, 255, 128, 0.2);
+            border: 1px solid rgba(66, 133, 244, 0.2);
             border-radius: 8px;
             padding: 20px;
             max-height: 400px;
@@ -531,14 +549,14 @@
 
         .copy-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 217, 61, 0.3);
+            box-shadow: 0 8px 20px rgba(251, 188, 4, 0.3);
         }
 
         .instructions {
             margin-top: 48px;
             padding: 32px;
-            background: rgba(255, 217, 61, 0.05);
-            border: 1px solid rgba(255, 217, 61, 0.2);
+            background: rgba(251, 188, 4, 0.05);
+            border: 1px solid rgba(251, 188, 4, 0.2);
             border-radius: 16px;
         }
 
@@ -565,6 +583,33 @@
             font-family: 'JetBrains Mono', monospace;
             color: var(--primary);
             font-size: 0.9em;
+        }
+
+        .instructions a {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .alert-box {
+            background: rgba(251, 188, 4, 0.1);
+            border: 1px solid rgba(251, 188, 4, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .alert-box h3 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-box p {
+            color: var(--text-dim);
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
@@ -594,7 +639,7 @@
             display: inline-block;
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(138, 255, 128, 0.3);
+            border: 2px solid rgba(66, 133, 244, 0.3);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -612,12 +657,17 @@
 
     <div class="container">
         <header>
-            <h1>📸 Pamphlet Data Extractor</h1>
+            <h1>🔷 Pamphlet Data Extractor</h1>
             <p class="subtitle">Transform product catalogs into structured CSV files instantly</p>
-            <span class="tech-badge">Powered by Claude AI (CORS-Free)</span>
+            <span class="tech-badge">Powered by Google Gemini Pro</span>
         </header>
 
         <div class="main-card">
+            <div class="alert-box">
+                <h3>⚠️ First Time Setup Required</h3>
+                <p>Before using this tool, you need to set up Gemini with web search capability. Copy the system prompt below and paste it as your FIRST message to Gemini, then you can use this tool for all future extractions.</p>
+            </div>
+
             <div class="upload-zone" id="uploadZone">
                 <span class="upload-icon">📤</span>
                 <div class="upload-text">Drop pamphlet images here</div>
@@ -627,15 +677,14 @@
 
             <div class="preview-container" id="previewContainer"></div>
 
-            <div style="margin-bottom: 24px;">
-                <label style="display: block; color: var(--text); margin-bottom: 8px; font-weight: 600;">Category ID (from your Supabase categories table):</label>
-                <input type="text" id="categoryIdInput" placeholder="e.g., 3" 
-                    style="width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'JetBrains Mono', monospace;">
+            <div class="form-group">
+                <label>Category ID (from your Supabase categories table):</label>
+                <input type="text" id="categoryIdInput" placeholder="e.g., a1ba6b59-6017-4b0d-91f4-ff3062679f69">
             </div>
 
             <div class="action-buttons">
                 <button class="btn btn-primary" id="generateBtn" disabled>
-                    <span>🔮 Generate Claude Prompt</span>
+                    <span>🔮 Generate Gemini Prompt</span>
                 </button>
             </div>
 
@@ -647,35 +696,66 @@
                 <div id="logContent"></div>
             </div>
 
+            <div class="prompt-box" id="systemPromptBox">
+                <div class="prompt-header">
+                    <span>🔧</span>
+                    <span>Step 1: Copy this SYSTEM PROMPT (one-time setup)</span>
+                </div>
+                <div class="prompt-content" id="systemPromptContent">You are a product data extraction assistant specialized in creating CSV files for e-commerce databases. When analyzing product catalog images, you:
+
+1. Extract product names and prices with extreme precision
+2. Use Google Search to find REAL product descriptions (never make them up)
+3. Generate clean, SEO-friendly URL slugs
+4. Format data as CSV with exact column specifications
+5. Always search the web for accurate product information
+
+When given product images, you will:
+- Identify all visible products
+- Extract exact names and prices
+- Search for each product to get authentic descriptions
+- Create proper slugs (lowercase, hyphens, no special chars)
+- Output structured CSV data
+
+You maintain high accuracy and always verify information through web search before including descriptions.</div>
+                <button class="copy-btn" id="copySystemBtn">
+                    <span>📋</span>
+                    <span>Copy System Prompt</span>
+                </button>
+            </div>
+
             <div class="prompt-box" id="promptBox">
                 <div class="prompt-header">
                     <span>📋</span>
-                    <span>Copy this prompt and paste it in Claude.ai</span>
+                    <span>Step 2: Copy this prompt and paste in Gemini with your images</span>
                 </div>
                 <div class="prompt-content" id="promptContent"></div>
                 <button class="copy-btn" id="copyBtn">
                     <span>📋</span>
-                    <span>Copy Prompt</span>
+                    <span>Copy Extraction Prompt</span>
                 </button>
             </div>
 
             <div class="instructions">
-                <h2>🚀 How to Use (CORS-Free Method)</h2>
+                <h2>🚀 How to Use (Gemini Edition)</h2>
                 <ol>
-                    <li>Upload one or more pamphlet images</li>
-                    <li>Enter your category_id from Supabase (check your categories table)</li>
-                    <li>Click "Generate Claude Prompt" - images will be embedded</li>
-                    <li>Copy the generated prompt</li>
-                    <li>Open <a href="https://claude.ai" target="_blank" style="color: var(--primary); text-decoration: underline;">claude.ai</a> in a new tab</li>
-                    <li>Paste the prompt and wait for Claude to generate your CSV</li>
-                    <li>Download the CSV from Claude's response</li>
+                    <li><strong>First Time Setup:</strong> Copy the "System Prompt" above</li>
+                    <li>Go to <a href="https://aistudio.google.com/app/prompts/new_chat" target="_blank">Google AI Studio</a> (free, no API key needed in browser)</li>
+                    <li>Paste the system prompt as your FIRST message (this sets up Gemini's behavior)</li>
+                    <li><strong>Then for each extraction:</strong></li>
+                    <li>Upload your pamphlet images here</li>
+                    <li>Enter your category_id from Supabase</li>
+                    <li>Click "Generate Gemini Prompt"</li>
+                    <li>Copy the extraction prompt</li>
+                    <li>In the SAME Gemini chat, attach your images and paste the prompt</li>
+                    <li>Gemini will search the web for descriptions and generate your CSV</li>
+                    <li>Download the CSV from Gemini's response</li>
                     <li>Import to Supabase: Table Editor → Products → Insert → "Import data from CSV"</li>
                 </ol>
                 <p style="margin-top: 16px; color: var(--text-dim);">
-                    <strong>Why this method?</strong> Browser CORS restrictions prevent direct API calls. This workaround lets you use Claude.ai's interface (which has API access) to process your images.
+                    <strong>Pro Tip:</strong> Keep the same Gemini chat open and reuse it for multiple extractions - you only need to send the system prompt once!
                 </p>
-                <p style="margin-top: 12px; color: var(--accent); font-size: 0.9rem;">
-                    ✨ Claude will search the web for real product descriptions and auto-generate slugs!
+                <p style="margin-top: 12px; color: var(--success); font-size: 0.9rem;">
+                    ✨ Gemini will automatically search Google for real product descriptions and generate proper slugs!
                 </p>
             </div>
         </div>
@@ -694,7 +774,13 @@
         const promptBox = document.getElementById('promptBox');
         const promptContent = document.getElementById('promptContent');
         const copyBtn = document.getElementById('copyBtn');
+        const systemPromptBox = document.getElementById('systemPromptBox');
+        const systemPromptContent = document.getElementById('systemPromptContent');
+        const copySystemBtn = document.getElementById('copySystemBtn');
         const categoryIdInput = document.getElementById('categoryIdInput');
+
+        // Show system prompt by default
+        systemPromptBox.classList.add('show');
 
         // Logging system
         function addLog(message, type = 'info') {
@@ -807,23 +893,14 @@
             addLog(`🏷️ Using category_id: ${categoryId}`, 'info');
 
             try {
-                const imageDataArray = [];
+                addLog('🎨 Building Gemini extraction prompt...', 'info');
                 
-                for (let i = 0; i < uploadedFiles.length; i++) {
-                    const file = uploadedFiles[i];
-                    addLog(`📸 Converting image ${i + 1}/${uploadedFiles.length}: ${file.name}`, 'info');
-                    const base64 = await fileToBase64(file);
-                    imageDataArray.push({ name: file.name, data: base64 });
-                    addLog(`✓ Converted ${file.name} to base64`, 'success');
-                }
-
-                addLog('🎨 Building Claude prompt with embedded images...', 'info');
-                
-                const prompt = buildClaudePrompt(imageDataArray, categoryId);
+                const prompt = buildGeminiPrompt(categoryId, uploadedFiles.length);
                 
                 addLog('✓ Prompt generated successfully!', 'success');
                 addLog(`📏 Prompt size: ${(prompt.length / 1024).toFixed(1)} KB`, 'info');
                 addLog('📋 Scroll down to copy the prompt', 'success');
+                addLog(`📎 Remember to attach ${uploadedFiles.length} image(s) to your Gemini message!`, 'warning');
 
                 promptContent.textContent = prompt;
                 promptBox.classList.add('show');
@@ -836,69 +913,66 @@
             }
         });
 
-        async function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const base64 = reader.result.split(',')[1];
-                    resolve(base64);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
+        function buildGeminiPrompt(categoryId, imageCount) {
+            return `Extract product data from the ${imageCount} attached image(s) and create a CSV file for my Supabase database.
 
-        function buildClaudePrompt(imageDataArray, categoryId) {
-            let prompt = `I need you to extract product data from ${imageDataArray.length} pamphlet image(s) and create a CSV file for my Supabase database.
+DATABASE SCHEMA - Use these EXACT columns:
+name,description,detailed_description,price,image_url,category_id,slug,stock_status,is_active,is_deal,deal_price,is_bestseller
 
-INSTRUCTIONS:
-1. Extract all products from the images with their names and prices
-2. For EACH product, search the web to find a real, accurate description (1-2 sentences)
-3. Generate a clean URL slug for each product (lowercase, hyphens, no special chars)
-4. Format as CSV with these exact columns:
-   name,description,detailed_description,price,image_url,category_id,slug,stock_status,is_active,is_deal,deal_price,is_bestseller
+EXTRACTION REQUIREMENTS:
+1. Extract ALL products visible in the image(s)
+2. For EACH product, use Google Search to find a real, accurate description (1-2 sentences)
+3. Generate clean URL slugs (lowercase, hyphens, no special characters)
+4. Extract exact prices as shown (numbers only, no $ symbols)
 
-FIELD REQUIREMENTS:
+FIELD SPECIFICATIONS:
 - name: Exact product name from image
-- description: Real product description from web search (NOT made up)
-- detailed_description: Leave empty
-- price: Just the number (no $ symbol)
-- image_url: Leave empty  
+- description: Real description from Google Search (REQUIRED - never make up descriptions)
+- detailed_description: (leave empty)
+- price: Numeric only (e.g., 19.99, not $19.99)
+- image_url: (leave empty)
 - category_id: ${categoryId}
-- slug: Auto-generated, URL-friendly
+- slug: Auto-generate from name (e.g., "Skiing Bear Candy" → "skiing-bear-candy")
 - stock_status: in_stock
 - is_active: true
 - is_deal: false
 - deal_price: (leave empty)
 - is_bestseller: false
 
-IMPORTANT:
-- Search the web for REAL product descriptions
-- Generate proper slugs
-- Be precise with prices from the images
-- Output only the CSV data, ready to download
+CRITICAL INSTRUCTIONS:
+✓ Search Google for each product to get REAL descriptions
+✓ Be precise with product names and prices from the images
+✓ Generate proper slugs (lowercase, replace spaces/special chars with hyphens)
+✓ Output ONLY the CSV data (no markdown, no explanations)
+✓ First row must be the header row
+✓ Use commas as delimiters, quotes around fields containing commas
 
-Here are the images:
-`;
+OUTPUT FORMAT:
+Start your response with the CSV header, then one row per product. Make it downloadable.
 
-            // Note: In the actual claude.ai interface, you'd attach these as images
-            // For this prompt, we'll just list them
-            imageDataArray.forEach((img, index) => {
-                prompt += `\nImage ${index + 1}: ${img.name}\n`;
-            });
-
-            prompt += `\n\nIMPORTANT: I will upload these ${imageDataArray.length} image(s) along with this message. Please analyze them and create the CSV.`;
-
-            return prompt;
+Ready? Analyze the attached ${imageCount} image(s) and create the CSV.`;
         }
+
+        copySystemBtn.addEventListener('click', () => {
+            const text = systemPromptContent.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = copySystemBtn.innerHTML;
+                copySystemBtn.innerHTML = '<span>✓</span><span>Copied!</span>';
+                addLog('📋 System prompt copied!', 'success');
+                addLog('👉 Paste this in Gemini as your first message', 'info');
+                setTimeout(() => {
+                    copySystemBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
 
         copyBtn.addEventListener('click', () => {
             const text = promptContent.textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const originalText = copyBtn.innerHTML;
                 copyBtn.innerHTML = '<span>✓</span><span>Copied!</span>';
-                addLog('📋 Prompt copied to clipboard!', 'success');
-                addLog('👉 Now paste this in claude.ai along with your images', 'info');
+                addLog('📋 Extraction prompt copied!', 'success');
+                addLog(`👉 Attach your ${uploadedFiles.length} image(s) and paste in Gemini`, 'info');
                 setTimeout(() => {
                     copyBtn.innerHTML = originalText;
                 }, 2000);
