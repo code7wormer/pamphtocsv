@@ -709,25 +709,15 @@
 4. Write detailed descriptions (1-2 sentences) with comprehensive product info from web search
 5. Generate clean, SEO-friendly URL slugs
 6. Format data as CSV with exact column specifications
-7. CROP and optimize product images for e-commerce display
-
-IMAGE OPTIMIZATION REQUIREMENTS:
-- Identify each individual product in the catalog image
-- Crop each product to its own clean image (remove background/clutter)
-- Resize to 800x800px square format (perfect for product cards and detail pages)
-- Provide download link for each cropped image
-- Name files as: {product-slug}.jpg (e.g., "skiing-bear-toy-candy-12ct.jpg")
 
 When given product images, you will:
 - Identify all visible products
 - Extract exact names and prices
-- CROP each product from the catalog into individual 800x800px images
 - Search for each product to get authentic information
 - Write brief, punchy descriptions (under 10 words)
 - Write detailed descriptions with full product information from search
 - Create proper slugs (lowercase, hyphens, no special chars)
 - Output structured CSV data
-- Provide downloadable cropped images for each product
 
 You maintain high accuracy and always verify information through web search before including descriptions.</div>
                 <button class="copy-btn" id="copySystemBtn">
@@ -937,14 +927,13 @@ EXTRACTION REQUIREMENTS:
 2. For EACH product, use Google Search to find real product information
 3. Generate clean URL slugs (lowercase, hyphens, no special characters)
 4. Extract exact prices as shown (numbers only, no $ symbols)
-5. CROP each product into individual 800x800px images
 
 FIELD SPECIFICATIONS:
 - name: Exact product name from image
 - description: SHORT catchy description under 10 words (e.g., "Soft gummy candy with toy figurine")
 - detailed_description: Full product description from Google Search (1-2 sentences with real product info)
 - price: Numeric only (e.g., 19.99, not $19.99)
-- image_url: LEAVE EMPTY FOR NOW (you'll provide download links separately)
+- image_url: (leave empty)
 - category_id: ${categoryId}
 - slug: Auto-generate from name (e.g., "Skiing Bear Candy" → "skiing-bear-candy")
 - stock_status: in_stock
@@ -952,14 +941,6 @@ FIELD SPECIFICATIONS:
 - is_deal: false
 - deal_price: (leave empty)
 - is_bestseller: false
-
-IMAGE CROPPING INSTRUCTIONS:
-✓ Crop each product from the catalog into its own clean image
-✓ Remove background clutter, focus on the product only
-✓ Resize to 800x800px square format
-✓ Name each file as: {product-slug}.jpg
-✓ After generating the CSV, provide download links for all cropped images
-✓ Example: "skiing-bear-toy-candy-12ct.jpg"
 
 CRITICAL INSTRUCTIONS:
 ✓ Search Google for each product to get REAL information
@@ -972,11 +953,9 @@ CRITICAL INSTRUCTIONS:
 ✓ Use commas as delimiters, quotes around fields containing commas
 
 OUTPUT FORMAT:
-1. First, provide the CSV with the header row, then one row per product (make it downloadable)
-2. After the CSV, crop each product from the catalog image into individual 800x800px images
-3. Provide download links for each cropped image named as {product-slug}.jpg
+Start your response with the CSV header, then one row per product. Make it downloadable.
 
-Ready? Analyze the attached ${imageCount} image(s), create the CSV, and crop the product images.`;
+Ready? Analyze the attached ${imageCount} image(s) and create the CSV.`;
         }
 
         copySystemBtn.addEventListener('click', () => {
